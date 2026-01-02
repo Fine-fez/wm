@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>基础塑形1</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 响应式基础设置 */
+        html {
+            font-size: 100%;
+            /* 基于750px设计稿的响应式设置 */
+            @media (max-width: 750px) {
+                font-size: 100vw / 750;
+            }
+        }
+        
+        /* 设置body背景图片 */
+        body {
+            background-image: url('wamao_img/background1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* 相对定位，作为所有图片的定位容器 */
+            position: relative;
+            /* 适配750*1334设计稿的宽高比 */
+            max-height: 177.87vh; /* 1334/750*100 */
+        }
+        
+        /* 所有覆盖图片的通用样式 */
+        .overlay-image {
+            /* 绝对定位，覆盖在背景上 */
+            position: absolute;
+            /* 宽度与界面宽度一致 */
+            width: 100%;
+            /* 高度与界面高度一致 */
+            height: 100%;
+            /* 避免触摸事件影响 */
+            pointer-events: none;
+            /* 响应式图片大小 */
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* 图片7的样式 */
+        .image7 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+        }
+        
+        /* 图片8的样式 */
+        .image8 {
+            /* 确保图片在最上层 */
+            z-index: 2;
+        }
+        
+        
+        /* 图片5的样式 */
+        .image5 {
+            /* 确保图片在最上层 */
+            z-index: 4;
+        }
+        
+        /* 图片的样式 */
+        .wamao {
+            /* 确保图片在最上层 */
+            z-index: 2;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 控制最大显示大小 */
+            max-width: 80%;
+            /* 下移图片 */
+            top: 10%;
+            /* 居中显示 */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* wamaoo类样式 - 对应水平滚动容器中的wamao1-9图片 */
+        .organ {
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 确保图片保持原始比例 */
+            object-fit: contain;
+            /* 控制最大显示大小 */
+            max-width: 100%;
+            /* 保持原始高度 */
+            max-height: 100%;
+        }
+        
+        .image10 {
+            /* 确保图片在最上层 */
+            z-index: 4;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 向下向右移动 */
+            top: 47%;
+            left: 60%;
+        }
+        
+        
+        /* 进度条的样式 */
+        .jindutiao1 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+        }
+        
+        /* 进度条2的样式 */
+        .jindutiao2 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 直接位于右移界面宽度五分之一的位置 */
+            left: 20vw;
+        }
+        
+        /* 水平滚动容器样式 */
+        .horizontal-scroll-container {
+            /* 绝对定位 */
+            position: absolute;
+            /* 位于image7下方 */
+            top: 65%;
+            /* 宽度与界面一致 */
+            width: 100%;
+            /* 设置高度 */
+            height: 30vh;
+            /* 隐藏垂直滚动条 */
+            overflow-y: hidden;
+            /* 隐藏水平滚动条但保留滚动功能 */
+            overflow-x: auto;
+            /* 调整z-index确保在正确的层级 */
+            z-index: 4;
+            /* 隐藏滚动条 */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* 滚动内容样式 */
+        .scroll-content {
+            /* 使用flex布局 */
+            display: flex;
+            /* 不换行 */
+            flex-wrap: nowrap;
+            /* 高度与容器一致 */
+            height: 100%;
+            /* 确保内容足够宽 */
+            width: max-content;
+        }
+        
+        /* 滚动内容中的图片样式 */
+        .scroll-content img {
+            /* 每张图片占容器宽度的1/3（一次显示3张） */
+            width: 33.33vw;
+            /* 保持原始比例 */
+            height: auto;
+            /* 图片间距 */
+            margin-right: 10px;
+            /* 触摸事件允许 */
+            pointer-events: auto;
+        }
+        
+        /* 隐藏滚动条（Webkit内核浏览器） */
+        .horizontal-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* 确定按钮样式 */
+        #confirmBtn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #D2B48C;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        #confirmBtn:hover {
+            opacity: 1;
+        }
+        
+        #confirmBtn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* image9样式 */
+        .image9 {
+            z-index: 15;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            height: auto;
+            max-width: 90%;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* 最终wamao图片样式 */
+        .result-wamao {
+            z-index: 20;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -80%);
+            width: auto;
+            height: auto;
+            max-width: 85%;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* 提示框样式 */
+        .hint-box {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .hint-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .hint-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #FFD700;
+        }
+        
+        .hint-text-container {
+            overflow: hidden;
+            position: relative;
+            flex: 1;
+        }
+        
+        .hint-text {
+            font-size: 18px;
+            color: #333;
+            white-space: nowrap;
+            display: inline-block;
+            animation: textSlide 10s linear forwards;
+        }
+        
+        /* 文字轮播动画 */
+        @keyframes textSlide {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 所有覆盖图片 -->
+    <img src="wamao_img/image5.png" alt="猫爪" class="overlay-image image5">
+    <img src="wamao_img/image7.png" alt="操作台" class="overlay-image image7">
+    <img src="wamao_img/image8.png" alt="泥" class="overlay-image image8">
+    <img src="wamao_img/jindutiao1.png" alt="进度条1" class="overlay-image jindutiao1">
+    <img src="wamao_img/jindutiao2.png" alt="进度条2" class="overlay-image jindutiao2">
+    
+    <!-- 添加image9 -->
+    <img src="wamao_img/image9.png" alt="雾气" class="image9">
+    
+    <!-- 添加结果wamao图片容器 -->
+    <div id="resultContainer"></div>
+    
+    <!-- 添加提示框 -->
+    <div id="hintBox" class="hint-box">
+        <div class="hint-content">
+            <span class="hint-icon">💡</span>
+            <div class="hint-text-container">
+                <span class="hint-text">选择你喜欢的耳朵，鼻子，嘴巴，DIY一个专属瓦猫吧~</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 水平滚动图片容器 -->
+    <div class="horizontal-scroll-container">
+        <div class="scroll-content">
+            <img src="organ/ear1.jpg" alt="耳朵1" class="organ group-1" data-index="0">
+            <img src="organ/ear2.jpg" alt="耳朵2" class="organ group-1" data-index="1">
+            <img src="organ/ear3.jpg" alt="耳朵3" class="organ group-1" data-index="2">
+            <img src="organ/eyes1.jpg" alt="眼睛1" class="organ group-2" data-index="3">
+            <img src="organ/eyes2.jpg" alt="眼睛2" class="organ group-2" data-index="4">
+            <img src="organ/eyes3.jpg" alt="眼睛3" class="organ group-2" data-index="5">
+            <img src="organ/mouth1.jpg" alt="嘴巴1" class="organ group-3" data-index="6">
+            <img src="organ/mouth2.jpg" alt="嘴巴2" class="organ group-3" data-index="7">
+            <img src="organ/mouth3.jpg" alt="嘴巴3" class="organ group-3" data-index="8">
+        </div>
+    </div>
+
+    <!-- 确定按钮 -->
+    <button id="confirmBtn" disabled>确定</button>
+
+    <script>
+        // 页面加载时显示提示框，轮播后启动原有动画
+        window.onload = function() {
+            // 显示提示框
+            const hintBox = document.getElementById('hintBox');
+            setTimeout(() => {
+                hintBox.style.opacity = '1';
+                
+                // 10秒后隐藏提示框（与文字轮播动画时长一致）
+                setTimeout(() => {
+                    hintBox.style.opacity = '0';
+                    
+                    // 提示框完全隐藏后启动器官选择动画
+                    setTimeout(() => {
+                        initOrganSelection();
+                    }, 1000); // 等待1秒确保提示框完全隐藏
+                }, 10000); // 10秒后隐藏提示框
+            }, 300);
+        };
+        
+        // 初始化器官选择功能
+        function initOrganSelection() {
+            // 获取DOM元素
+            const scrollContainer = document.querySelector('.horizontal-scroll-container');
+            const scrollContent = document.querySelector('.scroll-content');
+            const images = document.querySelectorAll('.organ');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const image9 = document.querySelector('.image9');
+            const resultContainer = document.getElementById('resultContainer');
+            const image8 = document.querySelector('.image8');
+            const jindutiao2 = document.querySelector('.jindutiao2');
+            
+            // 存储用户选择的图片
+            const userSelections = [];
+            
+            // 每组的起始索引
+            const groups = [
+                { start: 0, end: 2 },  // 第一组：索引0-2
+                { start: 3, end: 5 },  // 第二组：索引3-5
+                { start: 6, end: 8 }   // 第三组：索引6-8
+            ];
+            
+            // 当前所在组
+            let currentGroup = 0;
+        
+        // 为图片添加选择效果样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .organ {
+                cursor: pointer;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .organ.selected {
+                transform: scale(1.05);
+                box-shadow: 0 0 20px rgba(210, 180, 140, 0.8);
+                border: 3px solid #D2B48C;
+                /* 确保边框不会被内容覆盖 */
+                box-sizing: border-box;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // 图片选择事件处理
+        images.forEach((image, index) => {
+            image.addEventListener('click', () => {
+                // 确定图片所属组
+                const groupIndex = Math.floor(index / 3);
+                
+                // 如果不是当前组的图片，不允许选择
+                if (groupIndex !== currentGroup) {
+                    return;
+                }
+                
+                // 移除当前组所有图片的选中状态
+                const currentGroupImages = document.querySelectorAll(`.group-${groupIndex + 1}`);
+                currentGroupImages.forEach(img => img.classList.remove('selected'));
+                
+                // 选中当前图片
+                image.classList.add('selected');
+                
+                // 记录选择
+                userSelections[groupIndex] = index;
+                
+                console.log(`用户在第${groupIndex + 1}组选择了图片${index + 1}`);
+                console.log('当前选择：', userSelections);
+                
+                // 检查是否所有组都已选择
+                checkSelectionsComplete();
+                
+                // 如果不是最后一组，自动滚动到下一组
+                if (groupIndex < groups.length - 1) {
+                    currentGroup++;
+                    scrollToNextGroup();
+                } else {
+                    // 所有组都选择完成
+                    console.log('所有选择完成！');
+                    console.log('最终选择：', userSelections);
+                }
+            });
+        });
+        
+        // 检查选择是否完成
+        function checkSelectionsComplete() {
+            if (userSelections.length === 3 && userSelections.every(selection => selection !== undefined)) {
+                confirmBtn.disabled = false;
+            } else {
+                confirmBtn.disabled = true;
+            }
+        }
+        
+        // 滚动到下一组的函数
+        function scrollToNextGroup() {
+            // 计算滚动距离（每组宽度 + 图片间距）
+            const groupWidth = window.innerWidth; // 容器宽度，正好显示一组3张图片
+            const scrollDistance = groupWidth * currentGroup;
+            
+            // 平滑滚动到下一组
+            scrollContainer.scrollTo({
+                left: scrollDistance,
+                behavior: 'smooth'
+            });
+            
+            console.log(`自动滚动到第${currentGroup + 1}组`);
+        }
+        
+        // 确定按钮点击事件
+        confirmBtn.addEventListener('click', () => {
+            console.log('确定按钮点击，开始处理...');
+            
+            // 隐藏确定按钮
+            confirmBtn.style.display = 'none';
+            
+            // 先让image8消失
+            image8.style.transition = 'opacity 0.5s ease';
+            image8.style.opacity = '0';
+            
+            // 等待image8消失动画完成后，再执行image9动画序列
+            setTimeout(() => {
+                showImage9Animation();
+            }, 500);
+        });
+        
+        // image9动画序列
+        function showImage9Animation() {
+            console.log('开始image9动画...');
+            
+            // image9出现动画
+            image9.style.transition = 'opacity 0.5s ease';
+            image9.style.opacity = '1';
+            
+            setTimeout(() => {
+                // 放大缩小动画
+                image9.style.transition = 'transform 0.5s ease-in-out';
+                image9.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                
+                setTimeout(() => {
+                    image9.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                    
+                    setTimeout(() => {
+                        image9.style.transform = 'translate(-50%, -50%) scale(1)';
+                        
+                        // 动画结束后消失
+                        setTimeout(() => {
+                            image9.style.transition = 'opacity 0.5s ease';
+                            image9.style.opacity = '0';
+                            
+                            // image9消失后显示结果wamao图片
+                            setTimeout(() => {
+                                showResultWamao();
+                            }, 500);
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }, 500);
+        }
+        
+        // 显示结果wamao图片
+        function showResultWamao() {
+            console.log('显示结果wamao图片...');
+            
+            // 根据用户选择确定显示的图片
+            const resultImage = getResultImage(userSelections);
+            
+            if (resultImage) {
+                // 创建结果图片元素
+                const wamaoImg = document.createElement('img');
+                wamaoImg.src = `27wamao1/${resultImage}`;
+                wamaoImg.alt = 'Result Wamao';
+                wamaoImg.className = 'result-wamao';
+                
+                // 添加到容器
+                resultContainer.appendChild(wamaoImg);
+                
+                // 出现动画
+                setTimeout(() => {
+                    wamaoImg.style.transition = 'opacity 0.8s ease';
+                    wamaoImg.style.opacity = '1';
+                    
+                    // wamao图片出现后，添加jindutiao2向右移动的动画
+                    setTimeout(() => {
+                        // 设置jindutiao2的动画效果
+                        jindutiao2.style.transition = 'left 1s ease';
+                        // 向右移动到35vw
+                        jindutiao2.style.left = '37vw';
+                        
+                        // jindutiao2移动动画完成后（1秒），跳转到process5.html
+                        setTimeout(() => {
+                            // 保存用户选择的结果图片信息到localStorage
+                            localStorage.setItem('selectedWamaoImage', resultImage);
+                            localStorage.setItem('userSelections', JSON.stringify(userSelections));
+                            // 跳转到process5.html
+                            window.location.href = 'process5.html';
+                        }, 1000);
+                    }, 800); // 等待wamao图片完全显示后再开始移动
+                }, 100);
+            } else {
+                console.error('无法确定结果图片');
+            }
+        }
+        
+        // 根据用户选择获取结果图片
+        function getResultImage(selections) {
+            // 确保选择了3张图片
+            if (selections.length !== 3) {
+                return null;
+            }
+            
+            // 转换为1-9的图片编号
+            const [first, second, third] = selections.map(s => s + 1);
+            
+            console.log(`用户选择的图片：第${first}张，第${second}张，第${third}张`);
+            
+            // 根据选择逻辑返回对应的图片
+            if (first === 1 && second === 4) {
+                if (third === 7) return 'wamao1.png';
+                if (third === 8) return 'wamao2.png';
+                if (third === 9) return 'wamao3.png';
+            } else if (first === 1 && second === 5) {
+                if (third === 7) return 'wamao4.png';
+                if (third === 8) return 'wamao5.png';
+                if (third === 9) return 'wamao6.png';
+            } else if (first === 1 && second === 6) {
+                if (third === 7) return 'wamao7.png';
+                if (third === 8) return 'wamao8.png';
+                if (third === 9) return 'wamao9.png';
+            } else if (first === 2 && second === 4) {
+                if (third === 7) return 'wamao10.png';
+                if (third === 8) return 'wamao11.png';
+                if (third === 9) return 'wamao12.png';
+            } else if (first === 2 && second === 5) {
+                if (third === 7) return 'wamao13.png';
+                if (third === 8) return 'wamao14.png';
+                if (third === 9) return 'wamao15.png';
+            } else if (first === 2 && second === 6) {
+                if (third === 7) return 'wamao16.png';
+                if (third === 8) return 'wamao17.png';
+                if (third === 9) return 'wamao18.png';
+            } else if (first === 3 && second === 4) {
+                if (third === 7) return 'wamao19.png';
+                if (third === 8) return 'wamao20.png';
+                if (third === 9) return 'wamao21.png';
+            } else if (first === 3 && second === 5) {
+                if (third === 7) return 'wamao22.png';
+                if (third === 8) return 'wamao23.png';
+                if (third === 9) return 'wamao24.png';
+            } else if (first === 3 && second === 6) {
+                if (third === 7) return 'wamao25.png';
+                if (third === 8) return 'wamao26.png';
+                if (third === 9) return 'wamao27.png';
+            }
+            
+            return null;
+        }
+    }
+    </script>
+</body>
+</html>

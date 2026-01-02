@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>文创页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url("background.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        /* 通用跳转容器样式：确保点击区域可触发 */
+        .jump-box {
+            position: absolute;
+            z-index: 2;
+            cursor: pointer;
+            /* 核心：添加固定高度，确保点击区域存在 */
+            height: 20vh;
+            width: 40%;
+            display: block; /* 关键：a标签设为块级元素 */
+            pointer-events: auto; /* 强制开启点击事件 */
+            background-color: transparent; /* 完全透明 */
+            border-radius: 12px;
+        }
+
+        /* 左侧跳转方框 */
+        .jump-left {
+            top: 40%; /* 调整垂直位置，让方框居中 */
+            left: 15%;
+            transform: translateY(-50%);
+        }
+
+        /* 右侧跳转方框 */
+        .jump-right {
+            top: 40%;
+            right: 15%;
+            transform: translateY(-50%);
+        }
+
+        /* 底部鸡汤文案：瓦猫左侧 */
+        .bottom-quote {
+            position: absolute;
+            bottom: 8%;
+            left: 10%;
+            z-index: 1;
+            max-width: 40%;
+        }
+
+        .motivational-quote {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            font-size: clamp(14px, 4.5vw, 18px);
+            color: #2d2d2d;
+            line-height: 1.8;
+            white-space: pre-line;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 750px) {
+            .jump-box {
+                width: 45%;
+                height: 18vh;
+            }
+            .jump-left {
+                left: 13%;
+            }
+            .jump-right {
+                right: 13%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .jump-box {
+                width: 80%;
+                height: 15vh;
+            }
+            .jump-left {
+                left: 10%;
+                top: 35%;
+            }
+            .jump-right {
+                right: 10%;
+                top: 55%;
+            }
+            .bottom-quote {
+                bottom: 6%;
+                left: 8%;
+            }
+        }
+
+        /* 横屏适配 */
+        @media (orientation: landscape) {
+            .jump-box {
+                width: 35%;
+                height: 25vh;
+            }
+            .jump-left {
+                top: 50%;
+                left: 8%;
+            }
+            .jump-right {
+                top: 50%;
+                right: 8%;
+            }
+            .bottom-quote {
+                bottom: 2%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧跳转方框：点击任意位置跳转到快递页面 -->
+    <a href="kuaidi.html " target="_self" class="jump-box jump-left"></a>
+
+    <!-- 右侧跳转方框：点击任意位置跳转到集卡册页面 -->
+    <a href="jika.html" target="_self" class="jump-box jump-right"></a>
+
+    <!-- 底部鸡汤文案 -->
+    <div class="bottom-quote">
+        <div class="motivational-quote" id="quoteText">加载中...</div>
+    </div>
+
+    <script>
+        const quoteArray = [
+            "把平凡的日子\n过成自己喜欢的模样",
+            "前路浩浩荡荡\n万事尽可期待",
+            "不必急着发光\n先让自己慢慢成长",
+            "今天的努力\n是明天的底气",
+            "保持热爱\n奔赴下一场山海"
+        ];
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const randomIndex = Math.floor(Math.random() * quoteArray.length);
+            document.getElementById('quoteText').textContent = quoteArray[randomIndex];
+        });
+    </script>
+</body>
+</html>

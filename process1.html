@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>原料制备</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 响应式基础设置 */
+        html {
+            font-size: 100%;
+        }
+        
+        /* 基于750px设计稿的响应式设置 */
+        @media (max-width: 750px) {
+            html {
+                font-size: 100vw / 750;
+            }
+        }
+        
+        /* 设置body为flex布局，居中显示内容 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f5f5f5; /* 可选：添加背景色，当主容器小于屏幕时显示 */
+        }
+        
+        /* 主容器样式：保持750*1334的固定宽高比 */
+        .main-container {
+            position: relative;
+            width: 100vw;
+            height: 177.87vw; /* 1334/750 = 1.7787，保持设计稿宽高比 */
+            max-height: 100vh;
+            max-width: 56.25vh; /* 750/1334 = 0.5625，当高度受限时限制宽度 */
+            overflow: hidden;
+            /* 设置背景图片 */
+            background-image: url('wamao_img/background1.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* 所有覆盖图片的通用样式 */
+        .overlay-image {
+            /* 绝对定位，覆盖在背景上 */
+            position: absolute;
+            /* 避免触摸事件影响 */
+            pointer-events: none;
+            /* 响应式图片大小 */
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* 图片31的样式 */
+        .image31 {
+            /* 确保图片在最上层 */
+            left: 0;
+            top: 67%;
+            width: auto;
+            height: auto;
+            z-index: 1;
+            width: 100%;
+        }
+
+        /* 图片36的样式 */
+        .image36 {
+            /* 确保图片在最上层 */
+            z-index: 6;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 向下向右移动 */
+            top: 70%;
+            right: 0;
+            /* 启用触摸事件，使其可以被点击 */
+            pointer-events: auto;
+        }
+        
+        /* 图片11的样式 */
+        .image11 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 向下向右移动，与image36位置一致 */
+            top: 70%;
+            right: 0;
+            /* 默认隐藏 */
+            display: none;
+        }
+
+        /* 图片37的样式 */
+        .image37 {
+            /* 确保图片在最上层 */
+            z-index: 6;
+            /* 启用触摸事件，使其可以被点击 */
+            pointer-events: auto;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            top:70%;
+        }
+        
+        /* 图片2的样式 */
+        .image2 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 向下向右移动 */
+            top: 70%;
+            left: 40%;
+            /* 启用触摸事件，使其可以被点击 */
+            pointer-events: auto;
+            /* 添加过渡动画 */
+            transition: all 1s ease;
+        }
+        
+        /* 图片3的样式 */
+        .image3 {
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: auto;
+            z-index: 2;
+        }
+        
+        .image4 {
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: auto;
+            z-index: 5;
+        }
+        
+        .image5 {
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: auto;
+            z-index: 5;
+        }
+        
+        /* 图片6的样式 */
+        .image6 {
+            /* 确保图片在最上层 */
+            z-index: 5;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 设置初始位置 */
+            left: 71%;
+            top: 90%;
+            transform: translate(-50%, -50%);
+            /* 过渡动画，使移动更平滑 */
+            transition: all 1s ease;
+        }
+
+        .image10 {
+            /* 确保图片在最上层 */
+            z-index: 4;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 向下向右移动 */
+            top: 47%;
+            left: 60%;
+        }
+        
+        /* 进度条的样式 */
+        .jindutiao1 {
+            /* 确保图片在最上层 */
+            z-index: 7;
+            width: 100%;
+        }
+        
+        /* 进度条2的样式 */
+        .jindutiao2 {
+            /* 确保图片在最上层 */
+            z-index: 7;
+            left: 0;
+            top: 0;
+            /* 保持原始比例 */
+            /* width: auto;
+            height: auto; */
+            /* 添加更平滑的过渡动画：增加时间到2秒并使用ease-in-out缓动函数 */
+            transition: left 2s ease-in-out;
+        }
+        
+        /* 图片8的样式 */
+        .image8 {
+            left: 50%;
+            top: 50%;
+            max-width: 100%;
+            height: auto;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            /* 默认隐藏 */
+            display: none;
+            /* 添加过渡动画 */
+            transition: opacity 1s ease;
+        }
+        
+        /* 定义放大缩小动画 */
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        /* 图片9的样式 */
+        .image9 {
+            left: 50%;
+            top: 50%;
+            max-width: 100%;
+            height: auto;
+            z-index: 6;
+            transform: translate(-50%, -50%);
+            /* 默认隐藏 */
+            display: none;
+            /* 添加过渡动画 */
+            transition: opacity 1s ease;
+        }
+        
+        /* 材料容器样式 */
+        .cailiao-container {
+            width: 100%;
+            height: auto;
+            position: static;
+        }
+        
+        /* 提示框样式 */
+        .hint-box {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .hint-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin: 0;
+        }
+        
+        .hint-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #FFD700;
+        }
+        
+        .hint-text-container {
+            overflow: hidden;
+            position: relative;
+            flex: 1;
+        }
+        
+        .hint-text {
+            font-size: 18px;
+            color: #333;
+            white-space: nowrap;
+            display: inline-block;
+            animation: textSlide 7s linear forwards;
+        }
+        
+        /* 文字轮播动画 */
+        @keyframes textSlide {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+    <script>
+        // 页面加载时先显示提示框
+        window.onload = function() {
+            // 显示提示框
+            const hintBox = document.getElementById('hintBox');
+            setTimeout(() => {
+                hintBox.style.opacity = '1';
+                
+                // 7秒后隐藏提示框（与文字轮播动画时长一致）
+                setTimeout(() => {
+                    hintBox.style.opacity = '0';
+                    
+                    // 提示框完全隐藏后初始化动画和事件监听
+                    setTimeout(() => {
+                        initMaterialSelection();
+                    }, 1000); // 等待1秒确保提示框完全隐藏
+                }, 7000); // 7秒后隐藏提示框
+            }, 300);
+        };
+        
+        // 材料选择初始化函数
+        function initMaterialSelection() {
+            console.log('提示框已隐藏，开始初始化材料选择动画');
+            
+            // 点击顺序相关变量
+            let currentStep = 0;
+            const expectedOrder = ['image37', 'image36', 'image2'];
+            
+            // 获取主容器
+            const mainContainer = document.querySelector('.main-container');
+            // 获取图片元素
+            const image37 = document.querySelector('.image37');
+            const image36 = document.querySelector('.image36');
+            const image3 = document.querySelector('.image3');
+            const image6 = document.querySelector('.image6');
+            const image10 = document.querySelector('.image10');
+            const image2 = document.querySelector('.image2');
+            const image8 = document.querySelector('.image8');
+            const image9 = document.querySelector('.image9');
+            const jindutiao2 = document.querySelector('.jindutiao2');
+            
+            if (!mainContainer || !image37 || !image36 || !image3 || !image6 || !image2 || !image10 || !image8 || !image9 || !jindutiao2) {
+                console.error('部分元素未找到，无法初始化动画');
+                return;
+            }
+            
+            // 错误提示函数
+            function showErrorPrompt(message) {
+                console.log('显示错误提示：', message);
+                const hintBox = document.getElementById('hintBox');
+                const hintText = hintBox.querySelector('.hint-text');
+                
+                // 保存原始提示文本
+                const originalText = hintText.textContent;
+                
+                // 设置错误提示文本
+                hintText.textContent = message;
+                
+                // 移除动画，然后重新添加以重置动画（错误提示使用更快的速度，5秒）
+                hintText.style.animation = 'none';
+                // 强制重排
+                void hintText.offsetWidth;
+                // 重新添加动画，错误提示使用5秒速度
+                hintText.style.animation = 'textSlide 5s linear forwards';
+                
+                // 禁用交互
+                disableUserInteraction();
+                
+                // 显示提示框
+                hintBox.style.opacity = '1';
+                
+                // 5秒后隐藏提示框（错误提示使用更快的速度）
+                setTimeout(() => {
+                    hintBox.style.opacity = '0';
+                    
+                    // 提示框完全隐藏后恢复原始文本和用户交互
+                    setTimeout(() => {
+                        hintText.textContent = originalText;
+                        hintText.style.animation = 'none';
+                        enableUserInteraction();
+                    }, 1000); // 等待1秒确保提示框完全隐藏
+                }, 5000); // 5秒轮播（错误提示使用更快的速度）
+            }
+            
+            // 禁用用户交互函数
+            function disableUserInteraction() {
+                image37.style.pointerEvents = 'none';
+                image36.style.pointerEvents = 'none';
+                image2.style.pointerEvents = 'none';
+            }
+            
+            // 启用用户交互函数
+            function enableUserInteraction() {
+                image37.style.pointerEvents = 'auto';
+                image36.style.pointerEvents = 'auto';
+                image2.style.pointerEvents = 'auto';
+            }
+            
+            // 获取主容器的位置信息
+            const containerRect = mainContainer.getBoundingClientRect();
+            
+            // 辅助函数：将基于视口的坐标转换为基于主容器的坐标
+            function getRelativePosition(element) {
+                const rect = element.getBoundingClientRect();
+                return {
+                    left: rect.left - containerRect.left,
+                    top: rect.top - containerRect.top,
+                    width: rect.width,
+                    height: rect.height,
+                    right: rect.right - containerRect.left,
+                    bottom: rect.bottom - containerRect.top
+                };
+            }
+            
+            console.log('找到所有图片元素');
+            
+            // 为image37添加点击事件监听器
+            image37.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // 检查点击顺序
+                if (expectedOrder[currentStep] !== 'image37') {
+                    showErrorPrompt('请先选取砂石');
+                    return;
+                }
+                
+                // 推进步骤
+                currentStep++;
+                
+                console.log('点击了image37，开始执行动画序列');
+                
+                // 重置位置
+                image6.style.left = '50%';
+                image6.style.top = '50%';
+                image6.style.transform = 'translate(-50%, -50%)';
+                
+                // 强制重排，确保动画可以正常开始
+                void image6.offsetWidth;
+                
+                // 获取image37的相对位置和大小
+                const rect37 = getRelativePosition(image37);
+                console.log('image37的相对位置和大小：', rect37);
+                
+                // 第一步：移动到image37的正中间位置
+                console.log('第一步：移动到image37的正中间位置');
+                // 计算image37的中心点位置
+                const centerX37 = rect37.left + rect37.width / 2;
+                const centerY37 = rect37.top + rect37.height / 2;
+                // 设置image6的位置为image37的中心点
+                image6.style.left = centerX37 + 'px';
+                image6.style.top = centerY37 + 'px';
+                // 使用transform确保image6自身的中心点与image37的中心点重合
+                image6.style.transform = 'translate(-50%, -50%)';
+                
+                // 第二步：到达后执行小幅度顺时针圆周运动，持续1.5秒
+                setTimeout(function() {
+                    console.log('第二步：执行小幅度顺时针圆周运动');
+                    
+                    // 圆周运动的参数，使用image37的中心点作为圆心
+                    const centerX = centerX37;
+                    const centerY = centerY37;
+                    const radius = 10; // 很小的半径，实现小幅度运动
+                    const duration = 1200; // 1.5秒
+                    const steps = 45; // 动画的步数
+                    const stepTime = duration / steps;
+                    let animationStep = 0;
+                    
+                    // 执行圆周运动
+                    const circularAnimation = setInterval(function() {
+                        animationStep++;
+                        
+                        // 计算当前角度（顺时针方向）
+                        const angle = (animationStep / steps) * 2 * Math.PI;
+                        
+                        // 计算圆周上的点坐标
+                        const x = centerX + Math.cos(angle) * radius;
+                        const y = centerY + Math.sin(angle) * radius;
+                        
+                        // 更新image6的位置
+                        image6.style.left = x + 'px';
+                        image6.style.top = y + 'px';
+                        
+                        // 动画结束
+                        if (animationStep >= steps) {
+                            clearInterval(circularAnimation);
+                            
+                            // 第三步：圆周运动结束后，移动到image3中央
+                            setTimeout(function() {
+                                // 获取image3的相对位置
+                                const rect3 = getRelativePosition(image3);
+                                console.log('image3的相对位置：', rect3);
+                                
+                                console.log('第三步：移动到image3中央偏上位置');
+                                image6.style.left = rect3.left + rect3.width / 2 + 'px';
+                                image6.style.top = (rect3.top + rect3.height / 2 - 55) + 'px';
+                                
+                                // 第四步：在image3中央停留1.5秒
+                                setTimeout(function() {
+                                    // 第五步：恢复原位
+                                    console.log('第五步：恢复原位');
+                                    image6.style.left = '71%';
+                                    image6.style.top = '90%';
+                                }, 1500); // 停留1.5秒
+                            }, 0);
+                        }
+                    }, stepTime);
+                }, 1000); // 等待第一步移动完成（1秒）
+            });
+            
+            // 为image36添加点击事件监听器
+            image36.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // 检查点击顺序
+                if (expectedOrder[currentStep] !== 'image36') {
+                    showErrorPrompt('请先选取砂石');
+                    return;
+                }
+                
+                // 推进步骤
+                currentStep++;
+                
+                console.log('点击了image36，开始执行动画序列');
+                
+                // 重置位置
+                image6.style.left = '50%';
+                image6.style.top = '50%';
+                image6.style.transform = 'translate(-50%, -50%)';
+                
+                // 强制重排，确保动画可以正常开始
+                void image6.offsetWidth;
+                
+                // 获取image36的相对位置
+                const rect36 = getRelativePosition(image36);
+                console.log('image36的相对位置：', rect36);
+                
+                // 第一步：移动到image36的位置
+                console.log('第一步：移动到image36的位置');
+                image6.style.left = (rect36.left + rect36.width / 2) + 'px';
+                image6.style.top = (rect36.top + rect36.height / 2) + 'px';
+                
+                // 第二步：到达后执行小幅度逆时针圆周运动，持续1.2秒
+                setTimeout(function() {
+                    console.log('第二步：执行小幅度逆时针圆周运动');
+                    
+                    // 圆周运动的参数
+                    const centerX = rect36.left + rect36.width / 2;
+                    const centerY = rect36.top + rect36.height / 2;
+                    const radius = 8; // 很小的半径，实现小幅度运动
+                    const duration = 1200; // 1.2秒
+                    const steps = 60; // 动画的步数
+                    const stepTime = duration / steps;
+                    let animationStep = 0;
+                    
+                    // 执行逆时针圆周运动
+                    const circularAnimation = setInterval(function() {
+                        animationStep++;
+                        
+                        // 计算当前角度（逆时针方向，使用负角度）
+                        const angle = -(animationStep / steps) * 2 * Math.PI;
+                        
+                        // 计算圆周上的点坐标
+                        const x = centerX + Math.cos(angle) * radius;
+                        const y = centerY + Math.sin(angle) * radius;
+                        
+                        // 更新image6的位置
+                        image6.style.left = x + 'px';
+                        image6.style.top = y + 'px';
+                        
+                        // 动画结束
+                        if (animationStep >= steps) {
+                            clearInterval(circularAnimation);
+                            
+                            // 第三步：圆周运动结束后，将image36替换为image11
+                            console.log('第三步：替换image36为image11');
+                            
+                            // 隐藏image36
+                            image36.style.display = 'none';
+                            
+                            // 显示image11
+                            const image11 = document.querySelector('.image11');
+                            if (image11) {
+                                image11.style.display = 'block';
+                            }
+                            
+                            // 第四步：圆周运动结束后，移动到image3中央
+                            setTimeout(function() {
+                                // 获取image3的相对位置
+                                const rect3 = getRelativePosition(image3);
+                                console.log('image3的相对位置：', rect3);
+                                
+                                console.log('第四步：移动到image3中央偏上位置');
+                                image6.style.left = rect3.left + rect3.width / 2 + 'px';
+                                image6.style.top = (rect3.top + rect3.height / 2 - 55) + 'px';
+                                
+                                // 第五步：在image3中央停留1.5秒
+                                setTimeout(function() {
+                                    // 第六步：恢复原位
+                                    console.log('第五步：恢复原位');
+                                    image6.style.left = '71%';
+                                    image6.style.top = '90%';
+                                }, 1500); // 停留1.5秒
+                            }, 0);
+                        }
+                    }, stepTime);
+                }, 1000); // 等待第一步移动完成（1秒）
+            });
+            
+            // 为image2添加点击事件监听器
+            image2.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // 检查点击顺序
+                if (expectedOrder[currentStep] !== 'image2') {
+                    if (currentStep === 0) {
+                        showErrorPrompt('请先选取砂石');
+                    } else if (currentStep === 1) {
+                        showErrorPrompt('请先选取陶土再加水哦');
+                    }
+                    return;
+                }
+                
+                // 推进步骤
+                currentStep++;
+                
+                console.log('点击了image2，开始执行动画序列');
+                
+                // 存储image10的初始位置
+                const image10InitialLeft = '60%';
+                const image10InitialTop = '47%';
+                
+                // 获取image2的相对位置
+                const rect2 = getRelativePosition(image2);
+                console.log('image2的相对位置：', rect2);
+                
+                // 第一步：image10移动到image2的位置，在image2上方
+                console.log('第一步：image10移动到image2的位置');
+                image10.style.left = (rect2.left + rect2.width / 2) + 'px';
+                image10.style.top = (rect2.top + rect2.height / 2) + 'px';
+                image10.style.transform = 'translate(-50%, -50%)';
+                
+                // 第二步：image2与image10一起移至image3的中央（同步移动）
+                setTimeout(function() {
+                    console.log('第二步：image2与image10一起移至image3的中央（同步移动）');
+                    
+                    // 获取image3的相对位置
+                    const rect3 = getRelativePosition(image3);
+                    console.log('image3的相对位置：', rect3);
+                    
+                    // 计算目标位置（与之前修改后的位置一致，中央偏上）
+                    const targetLeft = (rect3.left + rect3.width / 2) + 'px';
+                    const targetTop = (rect3.top + rect3.height / 2 - 55) + 'px';
+                    
+                    // 设置相同的过渡时间，确保同步移动
+                    image2.style.transition = 'all 1s ease';
+                    image10.style.transition = 'all 1s ease';
+                    
+                    // 同时移动image2和image10到相同的目标位置
+                    image2.style.left = targetLeft;
+                    image2.style.top = targetTop;
+                    image2.style.transform = 'translate(-50%, -50%)';
+                    
+                    image10.style.left = targetLeft;
+                    image10.style.top = targetTop;
+                    image10.style.transform = 'translate(-50%, -50%)';
+                    
+                    // 第三步：在image3中央停留2秒
+                    setTimeout(function() {
+                        console.log('第三步：在image3中央停留');
+                        
+                        // 第四步：image10回到动画开始前最初始的位置
+                        setTimeout(function() {
+                            console.log('第四步：image10回到初始位置');
+                            image10.style.left = image10InitialLeft;
+                            image10.style.top = image10InitialTop;
+                            image10.style.transform = '';
+                            
+                            // 第五步：image2消失（添加淡出动画）
+                            setTimeout(function() {
+                                console.log('第五步：image2消失');
+                                image2.style.opacity = '0';
+                                image2.style.transition = 'opacity 1s ease';
+                                
+                                // 第六步：image9出现（添加淡入动画）
+                                setTimeout(function() {
+                                    console.log('第六步：image9出现');
+                                    image9.style.display = 'block';
+                                    image9.style.opacity = '0';
+                                    // 强制重排，确保动画可以正常开始
+                                    void image9.offsetWidth;
+                                    image9.style.opacity = '1';
+                                    // 添加放大缩小动画
+                                    image9.style.animation = 'pulse 1s infinite';
+                                    
+                                    // 第七步：image9在界面中保持2秒
+                                    setTimeout(function() {
+                                        console.log('第七步：image9在界面中保持2秒');
+                                        // 移除放大缩小动画
+                                        image9.style.animation = '';
+                                        
+                                        // 第八步：image9消失（添加淡出动画）
+                                        setTimeout(function() {
+                                            console.log('第八步：image9消失');
+                                            image9.style.opacity = '0';
+                                            
+                                            // 第九步：image8出现（添加淡入动画）
+                                            setTimeout(function() {
+                                                console.log('第九步：image8出现');
+                                                image8.style.display = 'block';
+                                                image8.style.opacity = '0';
+                                                // 强制重排，确保动画可以正常开始
+                                                void image8.offsetWidth;
+                                                image8.style.opacity = '1';
+                                                
+                                                // 第十步：jindutiao2向右移动五分之一界面宽
+                                                setTimeout(function() {
+                                                    console.log('第十步：jindutiao2向右移动五分之一界面宽');
+                                                    // 获取主容器的宽度
+                                                    const containerWidth = mainContainer.offsetWidth;
+                                                    // 计算需要移动的距离（五分之一主容器宽）
+                                                    const moveDistance = containerWidth / 5;
+                                                    // 获取jindutiao2当前的left值
+                                                    const currentLeft = parseFloat(window.getComputedStyle(jindutiao2).left) || 0;
+                                                    // 设置新的left值
+                                                    jindutiao2.style.left = (currentLeft + moveDistance) + 'px';
+                                                    
+                                                    // 第十一步：jindutiao2移动完成后，自动跳转到process2.html
+                                                    setTimeout(function() {
+                                                        console.log('第十一步：动画完成，跳转到process2.html');
+                                                        window.location.href = 'process2.html';
+                                                    }, 2000); // 等待jindutiao2移动动画完成（与CSS过渡时间一致）
+                                                }, 1000); // 等待image8淡入完成
+                                            }, 1000); // 等待image9淡出完成
+                                        }, 1000); // 等待2秒后，开始image9淡出
+                                    }, 2000); // image9保持2秒
+                                }, 1000); // 等待image2淡出完成
+                            }, 1000); // 等待image10回到初始位置
+                        }, 2000); // 停留2秒
+                    }, 1000); // 等待移动到image3中央完成（与过渡时间一致）
+                }, 1000); // 等待image10移动到image2位置完成
+            });
+        };
+    </script>
+</head>
+<body>
+    <div class="main-container">
+    <!-- 所有覆盖图片 -->
+        <!-- 材料盒子容器 -->
+        <div class="cailiao-container">
+            <img src="wamao_img/image31.png" alt="材料台" class="overlay-image image31 cailiao">
+            <img src="wamao_img/image36.png" alt="陶土" class="overlay-image image36 cailiao">
+            <img src="wamao_img/image37.png" alt="砂石" class="overlay-image image37 cailiao">
+            <img src="wamao_img/image2.png" alt="水瓶" class="overlay-image image2 cailiao">
+            <img src="wamao_img/image6.png" alt="勺子" class="overlay-image image6 cailiao">
+        </div>
+        <img src="wamao_img/image11.png" alt="被勺过的陶土" class="overlay-image image11">
+        <img src="wamao_img/image3.png" alt="碗" class="overlay-image image3">
+        <img src="wamao_img/image4.png" alt="" class="overlay-image image4">
+        <img src="wamao_img/image5.png" alt="猫爪" class="overlay-image image5">
+        <img src="wamao_img/image10.png" alt="光标" class="overlay-image image10">
+        <img src="wamao_img/image8.png" alt="泥" class="overlay-image image8">
+        <img src="wamao_img/image9.png" alt="雾气" class="overlay-image image9">
+        <!-- 进度条容器 -->
+        <div class="jindutiao-container" style="position: static; width: 100%; height: auto;">
+            <img src="wamao_img/jindutiao1.png" alt="进度条1" class="overlay-image jindutiao1">
+            <img src="wamao_img/jindutiao2.png" alt="进度条2" class="overlay-image jindutiao2">
+        </div>
+        
+        <!-- 提示框 -->
+        <div id="hintBox" class="hint-box">
+            <div class="hint-content">
+                <span class="hint-icon">💡</span>
+                <div class="hint-text-container">
+                    <span class="hint-text">欢迎来到瓦猫制作工艺，首先选取材料台的原材料和泥,请依次选择砂石、陶土与水~</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

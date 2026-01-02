@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>装饰颜色</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 响应式基础设置 */
+        html {
+            font-size: 100%;
+            /* 基于750px设计稿的响应式设置 */
+            @media (max-width: 750px) {
+                font-size: 100vw / 750;
+            }
+        }
+        
+        /* 设置body背景图片 */
+        body {
+            background-image: url('wamao_img/background1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* 相对定位，作为所有图片的定位容器 */
+            position: relative;
+            /* 适配750*1334设计稿的宽高比 */
+            max-height: 177.87vh; /* 1334/750*100 */
+        }
+        
+        /* 所有覆盖图片的通用样式 */
+        .overlay-image {
+            /* 绝对定位，覆盖在背景上 */
+            position: absolute;
+            /* 宽度与界面宽度一致 */
+            width: 100%;
+            /* 高度与界面高度一致 */
+            height: 100%;
+            /* 避免触摸事件影响 */
+            pointer-events: none;
+            /* 响应式图片大小 */
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* 图片7的样式 */
+        .image7 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+        }
+        
+        /* 图片25的样式 */
+        .image25 {
+            /* 确保图片在最上层 */
+            z-index: 2;
+        }
+        
+        .image10 {
+            /* 确保图片在最上层 */
+            z-index: 4;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 向下向右移动 */
+            top: 47%;
+            left: 60%;
+        }
+        
+        /* 图片5的样式 */
+        .image5 {
+            /* 确保图片在最上层 */
+            z-index: 4;
+        }
+        
+        /* 图片的样式 */
+        .wamao {
+            /* 确保图片在最上层 */
+            z-index: 2;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 控制最大显示大小 */
+            max-width: 80%;
+            /* 下移图片 */
+            top: 10%;
+            /* 居中显示 */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+
+        /* 进度条的样式 */
+        .jindutiao1 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+        }
+        
+        /* 进度条2的样式 */
+        .jindutiao2 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 直接位于右移界面宽度五分之一的位置 */
+            left: 65vw;
+            /* 添加过渡动画效果 */
+            transition: left 0.5s ease;
+        }
+        
+        /* 底部矩形框容器样式 */
+        .color-boxes-container {
+            /* 绝对定位在页面底部 */
+            position: absolute;
+            bottom: 135px; /* 向上移动100px */
+            left: 0;
+            /* 占据整个页面宽度 */
+            width: 100vw;
+            /* 使用flex布局 */
+            display: flex;
+            /* 确保在最上层 */
+            z-index: 20;
+        }
+        
+        /* 矩形框通用样式 */
+        .color-box {
+            /* 平均分配宽度 */
+            flex: 1;
+            /* 设置高度等于宽度，使其成为正方形 */
+            aspect-ratio: 1 / 1;
+            /* 无间距 */
+            margin: 10px;
+            padding: 0;
+        }
+        
+        /* 第一个矩形框样式 - 粉色 */
+        .color-box-pink {
+            background-color: pink;
+        }
+        
+        /* 第二个矩形框样式 - 橙色 */
+        .color-box-orange {
+            background-color: orange;
+        }
+        
+        /* 第三个矩形框样式 - 蓝色 */
+        .color-box-blue {
+            background-color: blue;
+        }
+        
+        /* 确认按钮样式 - 与process2.html相同 */
+        #confirmBtn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #D2B48C;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        #confirmBtn:hover {
+            opacity: 1;
+        }
+        
+        #confirmBtn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* image9样式 */
+        .image9 {
+            z-index: 15;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            height: auto;
+            max-width: 90%;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* 矩形框选中状态样式 */
+        .color-box.selected {
+            border: 3px solid #D2B48C;
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+        
+        /* 提示框样式 */
+        .hint-box {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .hint-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .hint-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #FFD700;
+        }
+        
+        .hint-text-container {
+            overflow: hidden;
+            position: relative;
+            flex: 1;
+        }
+        
+        .hint-text {
+            font-size: 18px;
+            color: #333;
+            white-space: nowrap;
+            display: inline-block;
+            animation: textSlide 10s linear forwards;
+        }
+        
+        /* 文字轮播动画 */
+        @keyframes textSlide {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 所有覆盖图片 -->
+    <img src="wamao_img/image5.png" alt="猫爪" class="overlay-image image5">
+    <img src="wamao_img/image7.png" alt="操作台" class="overlay-image image7">
+    <img src="wamao_img/image25.png" alt="画笔" class="overlay-image image25">
+    <!-- <img src="../wamao_img/27wamao1/wamao1.png" alt="image3" class="overlay-image wamao"> -->
+    <img src="wamao_img/jindutiao1.png" alt="进度条" class="overlay-image jindutiao1">
+    <img src="wamao_img/jindutiao2.png" alt="进度条2" class="overlay-image jindutiao2">
+    <!-- 添加image9 -->
+    <img src="wamao_img/image9.png" alt="雾气" class="image9">
+    
+    <!-- 添加结果wamao图片容器 -->
+    <div id="resultContainer"></div>
+    
+    <!-- 添加提示框 -->
+    <div id="hintBox" class="hint-box">
+        <div class="hint-content">
+            <span class="hint-icon">💡</span>
+            <div class="hint-text-container">
+                <span class="hint-text">快选择喜欢的釉色装饰瓦猫吧~</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 确认按钮 -->
+    <button id="confirmBtn" disabled>确定</button>
+    
+    <script>
+        // 页面加载时读取并显示保存的wamao图片
+        window.onload = function() {
+            // 显示提示框
+            const hintBox = document.getElementById('hintBox');
+            setTimeout(() => {
+                hintBox.style.opacity = '1';
+                
+                // 10秒后隐藏提示框（与文字轮播动画时长一致）
+                setTimeout(() => {
+                    hintBox.style.opacity = '0';
+                    
+                    // 提示框完全隐藏后启动图片显示
+                    setTimeout(() => {
+                        displaySavedWamaoImage();
+                    }, 1000); // 等待1秒确保提示框完全隐藏
+                }, 10000); // 10秒后隐藏提示框
+            }, 300);
+        };
+        
+        // 显示保存的wamao图片
+        function displaySavedWamaoImage() {
+            // 从localStorage读取保存的图片信息
+            const selectedWamaoImage = localStorage.getItem('selectedWamaoImage');
+            
+            if (selectedWamaoImage) {
+                // 创建结果图片元素
+                const wamaoImg = document.createElement('img');
+                wamaoImg.src = `27wamao1/${selectedWamaoImage}`;
+                wamaoImg.alt = 'Result Wamao';
+                
+                // 设置样式
+                wamaoImg.style.zIndex = '14';
+                wamaoImg.style.position = 'absolute';
+                wamaoImg.style.top = '35%';
+                wamaoImg.style.left = '50%';
+                wamaoImg.style.transform = 'translate(-50%, -50%) translateZ(0) scale(1)';
+                wamaoImg.style.width = 'auto';
+                wamaoImg.style.height = 'auto';
+                wamaoImg.style.maxWidth = '80%';
+                wamaoImg.style.maxHeight = '80%';
+                wamaoImg.style.opacity = '0';
+                wamaoImg.style.transition = 'opacity 1s ease';
+                wamaoImg.style.pointerEvents = 'none';
+                
+                // 添加到容器
+                const resultContainer = document.getElementById('resultContainer');
+                resultContainer.appendChild(wamaoImg);
+                
+                // 淡入动画
+                setTimeout(() => {
+                    wamaoImg.style.opacity = '1';
+                }, 500);
+            } else {
+                console.error('未找到保存的wamao图片信息');
+            }
+        };
+        
+        // DOM元素加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const colorBoxes = document.querySelectorAll('.color-box');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const image9 = document.querySelector('.image9');
+            const resultContainer = document.getElementById('resultContainer'); // 获取结果容器
+            
+            // 存储用户选择的颜色
+            let selectedColor = null;
+            
+            // 为每个矩形框添加点击事件
+            colorBoxes.forEach((box, index) => {
+                box.addEventListener('click', () => {
+                    // 移除所有矩形框的选中状态
+                    colorBoxes.forEach(b => b.classList.remove('selected'));
+                    
+                    // 为当前矩形框添加选中状态
+                    box.classList.add('selected');
+                    
+                    // 记录选择的颜色
+                    selectedColor = index;
+                    
+                    console.log(`用户选择了第${index + 1}个颜色矩形框`);
+                    
+                    // 启用确认按钮
+                    confirmBtn.disabled = false;
+                });
+            });
+            
+            // 确认按钮点击事件
+            confirmBtn.addEventListener('click', () => {
+                if (selectedColor === null) {
+                    return; // 确保有选择
+                }
+                
+                console.log('用户点击了确认按钮');
+                
+                // 隐藏确认按钮
+                confirmBtn.style.display = 'none';
+                
+                // 移除所有矩形框的选中状态
+                colorBoxes.forEach(b => b.classList.remove('selected'));
+                
+                // 开始image9的动画效果，传递选中的颜色索引
+                showImage9Animation(selectedColor);
+            });
+            
+            // image9动画效果函数
+            function showImage9Animation(selectedColorIndex) {
+                console.log('开始image9动画...');
+                
+                // image9出现
+                image9.style.transition = 'opacity 0.5s ease';
+                image9.style.opacity = '1';
+                
+                // 放大缩小动画（持续2秒）
+                let animationCount = 0;
+                const maxAnimations = 2; // 总共执行2次放大缩小循环
+                
+                // 在动画进行1秒时隐藏本地存储的result wamao图片
+                setTimeout(() => {
+                    console.log('动画进行1秒，隐藏本地存储的图片');
+                    // 隐藏resultContainer中的图片
+                    const wamaoImg = resultContainer.querySelector('img');
+                    if (wamaoImg) {
+                        wamaoImg.style.transition = 'opacity 0.5s ease';
+                        wamaoImg.style.opacity = '0';
+                    }
+                }, 1000);
+                
+                function animateImage9() {
+                    // 放大
+                    image9.style.transition = 'transform 0.5s ease-in-out';
+                    image9.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                    
+                    setTimeout(() => {
+                        // 缩小
+                        image9.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                        
+                        setTimeout(() => {
+                            // 恢复原始大小
+                            image9.style.transform = 'translate(-50%, -50%) scale(1)';
+                            
+                            animationCount++;
+                            
+                            // 如果还没完成指定次数的动画，继续执行
+                            if (animationCount < maxAnimations) {
+                                setTimeout(() => {
+                                    animateImage9();
+                                }, 100);
+                            } else {
+                                // 动画完成后保持显示
+                                console.log('image9动画完成');
+                                
+                                // 在image9动画结束后，显示带颜色的wamao图片
+                                showColoredWamaoImage(selectedColorIndex);
+                            }
+                        }, 500);
+                    }, 500);
+                }
+                
+                // 开始动画
+                animateImage9();
+            }
+            
+            // 根据用户选择的颜色显示带颜色装饰的wamao图片
+            function showColoredWamaoImage(selectedColorIndex) {
+                console.log('显示带颜色装饰的wamao图片');
+                
+                // 获取原始选择的图片信息
+                const selectedWamaoImage = localStorage.getItem('selectedWamaoImage');
+                
+                if (selectedWamaoImage) {
+                    // 解析图片编号
+                    // 假设图片格式为 "wamao1.png", "wamao2.png" 等
+                    const wamaoNumberMatch = selectedWamaoImage.match(/wamao(\d+)\.png/);
+                    
+                    if (wamaoNumberMatch && wamaoNumberMatch[1]) {
+                        const wamaoNumber = wamaoNumberMatch[1];
+                        
+                        // 根据选择的颜色确定图片后缀
+                        let colorSuffix;
+                        switch (selectedColorIndex) {
+                            case 0: // 第一个矩形框（粉色）
+                                colorSuffix = 'pink';
+                                break;
+                            case 1: // 第二个矩形框（橙色）
+                                // 所有wamao都使用橙色，因为27wamao2文件夹中存在所有编号的橙色图片
+                                colorSuffix = 'orange';
+                                break;
+                            case 2: // 第三个矩形框（蓝色）
+                                colorSuffix = 'blue';
+                                break;
+                            default:
+                                colorSuffix = 'pink'; // 默认粉色
+                        }
+                        
+                        // 构建新图片路径
+                        const coloredWamaoImagePath = `27wamao2/wamao${wamaoNumber}_${colorSuffix}.png`;
+                        const coloredWamaoImageName = `wamao${wamaoNumber}_${colorSuffix}.png`;
+                        
+                        console.log(`原始图片编号: ${wamaoNumber}`);
+                        console.log(`选择的颜色: ${colorSuffix}`);
+                        console.log(`新图片路径: ${coloredWamaoImagePath}`);
+                        
+                        // 隐藏image9
+                        image9.style.transition = 'opacity 0.5s ease';
+                        image9.style.opacity = '0';
+                        
+                        // 创建带颜色的wamao图片元素
+                        const coloredWamaoImg = document.createElement('img');
+                        coloredWamaoImg.src = coloredWamaoImagePath;
+                        coloredWamaoImg.alt = 'Colored Wamao';
+                        
+                        // 设置样式
+                        coloredWamaoImg.style.zIndex = '25';
+                        coloredWamaoImg.style.position = 'absolute';
+                        coloredWamaoImg.style.top = '35%';
+                        coloredWamaoImg.style.left = '50%';
+                        coloredWamaoImg.style.transform = 'translate(-50%, -50%) translateZ(0) scale(0.8)';
+                        coloredWamaoImg.style.width = 'auto';
+                        coloredWamaoImg.style.height = 'auto';
+                        coloredWamaoImg.style.maxWidth = '80%';
+                        coloredWamaoImg.style.maxHeight = '80%';
+                        coloredWamaoImg.style.opacity = '0';
+                        coloredWamaoImg.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        coloredWamaoImg.style.pointerEvents = 'none';
+                        
+                        // 添加到容器
+                        resultContainer.appendChild(coloredWamaoImg);
+                        
+                        // 淡入并放大动画
+                        setTimeout(() => {
+                            coloredWamaoImg.style.opacity = '1';
+                            coloredWamaoImg.style.transform = 'translate(-50%, -50%) translateZ(0) scale(1)';
+                            
+                            // 触发进度条2的右移动画
+                            const jindutiao2 = document.querySelector('.jindutiao2');
+                            if (jindutiao2) {
+                                jindutiao2.style.left = '75vw';
+                                
+                                // 进度条动画结束后，等待1.5秒自动跳转至process8.html
+                                setTimeout(() => {
+                                    window.location.href = 'process8.html';
+                                }, 1500);
+                            }
+                        }, 500);
+                        
+                        // 本地存储带颜色的图片信息
+                        localStorage.setItem('selectedColoredWamaoImage', coloredWamaoImageName);
+                        console.log('已存储带颜色的wamao图片信息:', coloredWamaoImageName);
+                    } else {
+                        console.error('无法解析原始图片编号:', selectedWamaoImage);
+                    }
+                } else {
+                    console.error('未找到原始选择的wamao图片信息');
+                }
+            }
+        });
+    </script>
+    
+    <!-- 底部三个颜色矩形框 -->
+    <div class="color-boxes-container">
+        <div class="color-box color-box-pink"></div>
+        <div class="color-box color-box-orange"></div>
+        <div class="color-box color-box-blue"></div>
+    </div>
+</body>
+</html>

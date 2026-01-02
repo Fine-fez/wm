@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>高温烧制2</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 响应式基础设置 */
+        html {
+            font-size: 100%;
+            /* 基于750px设计稿的响应式设置 */
+            @media (max-width: 750px) {
+                font-size: 100vw / 750;
+            }
+        }
+        
+        /* 设置body背景图片 */
+        body {
+            background-image: url('wamao_img/background2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* 相对定位，作为所有图片的定位容器 */
+            position: relative;
+            /* 适配750*1334设计稿的宽高比 */
+            max-height: 177.87vh; /* 1334/750*100 */
+        }
+        
+        /* 所有覆盖图片的通用样式 */
+        .overlay-image {
+            /* 绝对定位，覆盖在背景上 */
+            position: absolute;
+            /* 避免触摸事件影响 */
+            pointer-events: none;
+            /* 响应式图片大小 */
+            max-width: 100%;
+            height: auto;
+        }
+        
+        body {
+            background-image: url('../wamao_img/background2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* 相对定位，作为所有图片的定位容器 */
+            position: relative;
+            /* 添加3D透视效果 */
+            perspective: 1000px;
+        }
+        /* 所有覆盖图片的通用样式 */
+        .overlay-image {
+            /* 绝对定位，覆盖在背景上 */
+            position: absolute;
+            /* 宽度与界面宽度一致 */
+            width: 100%;
+            /* 高度与界面高度一致 */
+            height: 100%;
+            /* 避免触摸事件影响 */
+            pointer-events: none;
+            /* 启用3D变换 */
+            transform-style: preserve-3d;
+        }
+
+        /* 图片12的样式 */
+        .image12 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+        }
+        
+        /* 图片13的样式 */
+        .image13 {
+            /* 确保图片在最上层 */
+            z-index: 2;
+        }
+        
+        /* 图片14的样式 */
+        .image14 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+        }
+        
+        /* 图片15的样式 */
+        .image15 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+        }
+
+        /* 图片16的样式 */
+        .image16 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+        }
+
+        /* 图片17的样式 */
+        .image17 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+            /* 初始状态透明 */
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* 图片18的样式 */
+        .image18 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+            /* 初始状态透明 */
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* 图片的样式 */
+        .wamao {
+            /* 确保图片在最上层 */
+            z-index: 3;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 控制最大显示大小 */
+            max-width: 80%;
+            /* 下移图片 */
+            top: 60%;
+            /* 居中显示 */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* 向里移动并缩小的动画 */
+        @keyframes moveInAndShrink {
+            0% {
+                transform: translateZ(0) scale(1);
+            }
+            100% {
+                transform: translateZ(50px) scale(0.45);
+            }
+        }
+
+        /* 反向移动并恢复大小的动画 */
+        @keyframes moveOutAndRestore {
+            0% {
+                transform: translateZ(50px) scale(0.45);
+            }
+            100% {
+                transform: translateZ(0) scale(1);
+            }
+        }
+
+        /* 居中图片向里移动并缩小的动画 */
+        @keyframes centerMoveInAndShrink {
+            0% {
+                transform: translate(-50%, -50%) translateZ(0) scale(1);
+            }
+            100% {
+                transform: translate(-50%, -50%) translateZ(50px) scale(0.3);
+            }
+        }
+
+        /* 小幅度放大缩小的脉冲动画 */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* 进度条的样式 */
+        .jindutiao1 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+        }
+        
+        /* 进度条2的样式 */
+        .jindutiao2 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 直接位于右移界面宽度五分之一的位置 */
+            left: 75vw;
+        }
+        
+        /* 提示框样式 */
+        .hint-box {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .hint-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .hint-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #FFD700;
+        }
+        
+        .hint-text-container {
+            overflow: hidden;
+            position: relative;
+            flex: 1;
+        }
+        
+        .hint-text {
+            font-size: 18px;
+            color: #333;
+            white-space: nowrap;
+            display: inline-block;
+            animation: textSlide 10s linear forwards;
+        }
+        
+        /* 文字轮播动画 */
+        @keyframes textSlide {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 所有覆盖图片 -->
+    <img src="wamao_img/image12.png" alt="炉子" class="overlay-image image12">
+    <img src="wamao_img/image13.png" alt="支架台" class="overlay-image image13">
+    <img src="wamao_img/image14.png" alt="瓦猫们" class="overlay-image image14">
+    <img src="wamao_img/image15.png" alt="操作台" class="overlay-image image15">
+    <img src="wamao_img/image16.png" alt="猫爪" class="overlay-image image16">
+    <img src="wamao_img/image17.png" alt="火花" class="overlay-image image17">
+    <img src="wamao_img/image18.png" alt="烟雾" class="overlay-image image18">
+    <!-- <img src="../wamao_img/27wamao1/wamao1.png" alt="image3" class="overlay-image wamao"> -->
+    <img src="wamao_img/jindutiao1.png" alt="进度条1" class="overlay-image jindutiao1">
+    <img src="wamao_img/jindutiao2.png" alt="进度条2" class="overlay-image jindutiao2">
+    
+    <!-- 添加结果wamao图片容器 -->
+    <div id="resultContainer"></div>
+    
+    <!-- 提示框 -->
+    <div id="hintBox" class="hint-box">
+        <div class="hint-content">
+            <span class="hint-icon">💡</span>
+            <div class="hint-text-container">
+                <span class="hint-text">再次进行高温烧制，快快期待你的专属瓦猫吧~</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 页面加载完成后执行
+        window.onload = function() {
+            // 显示提示框
+            const hintBox = document.getElementById('hintBox');
+            setTimeout(() => {
+                hintBox.style.opacity = '1';
+                setTimeout(() => {
+                    hintBox.style.opacity = '0';
+                    setTimeout(startOriginalAnimation, 1000); // 隐藏后启动原有动画
+                }, 10000); // 10秒文字轮播
+            }, 300);
+        };
+        
+        // 原有动画序列函数
+        function startOriginalAnimation() {
+            // 从localStorage中获取带颜色的wamao图片信息
+            const coloredWamaoImageName = localStorage.getItem('selectedColoredWamaoImage');
+            
+            if (coloredWamaoImageName) {
+                console.log('获取到带颜色的wamao图片信息:', coloredWamaoImageName);
+                
+                // 构建完整的图片路径
+                const coloredWamaoImagePath = `27wamao2/${coloredWamaoImageName}`;
+                
+                // 创建结果图片元素
+                const coloredWamaoImg = document.createElement('img');
+                coloredWamaoImg.src = coloredWamaoImagePath;
+                coloredWamaoImg.alt = '带颜色的wamao图片';
+                
+                // 设置样式
+                coloredWamaoImg.style.zIndex = '20';
+                coloredWamaoImg.style.position = 'absolute';
+                coloredWamaoImg.style.top = '60%';
+                coloredWamaoImg.style.left = '50%';
+                coloredWamaoImg.style.transform = 'translate(-50%, -50%) translateZ(0) scale(1)';
+                coloredWamaoImg.style.width = 'auto';
+                coloredWamaoImg.style.height = 'auto';
+                coloredWamaoImg.style.maxWidth = '80%';
+                coloredWamaoImg.style.maxHeight = '80%';
+                coloredWamaoImg.style.opacity = '0';
+                coloredWamaoImg.style.transition = 'opacity 1s ease';
+                coloredWamaoImg.style.pointerEvents = 'none';
+                
+                // 添加到容器
+                const resultContainer = document.getElementById('resultContainer');
+                resultContainer.appendChild(coloredWamaoImg);
+                
+                // 淡入动画
+                setTimeout(() => {
+                    coloredWamaoImg.style.opacity = '1';
+                    
+                    // 2秒后添加向里移动并缩小的动画
+                    setTimeout(() => {
+                        coloredWamaoImg.style.animation = 'centerMoveInAndShrink 2s ease forwards';
+                        
+                        // 同时让image15和image16也触发向里移动并缩小的动画
+                        const image15 = document.querySelector('.image15');
+                        const image16 = document.querySelector('.image16');
+                        image15.style.animation = 'moveInAndShrink 2s ease forwards';
+                        image16.style.animation = 'moveInAndShrink 2s ease forwards';
+                        
+                        // 动画结束后（2秒后），让image16反向移动
+                        setTimeout(() => {
+                            const image16 = document.querySelector('.image16');
+                            image16.style.animation = 'moveOutAndRestore 2s ease forwards';
+                            
+                            // image16反向移动结束后（2秒后），显示image17和image18并添加脉冲动画
+                            setTimeout(() => {
+                                const image17 = document.querySelector('.image17');
+                                const image18 = document.querySelector('.image18');
+                                
+                                // 淡入显示
+                                image17.style.opacity = '1';
+                                image18.style.opacity = '1';
+                                
+                                // 添加脉冲动画，播放3次
+                                image17.style.animation = 'pulse 1s ease-in-out 3';
+                                image18.style.animation = 'pulse 1s ease-in-out 3';
+                                
+                                // 3秒后，jindutiao2右移至80vw
+                                setTimeout(() => {
+                                    const jindutiao2 = document.querySelector('.jindutiao2');
+                                    // 添加右移动画，持续1秒
+                                    jindutiao2.style.transition = 'left 1s ease forwards';
+                                    jindutiao2.style.left = '80vw';
+                                    
+                                    // 1秒后（jindutiao2移动完成），跳转至process9.html
+                                    setTimeout(() => {
+                                        window.location.href = 'process9.html';
+                                    }, 1000);
+                                }, 3000);
+                            }, 2000);
+                        }, 2000);
+                    }, 2000);
+                }, 500);
+            } else {
+                console.error('未找到带颜色的wamao图片信息');
+            }
+        }
+    </script>
+</body>
+</html>

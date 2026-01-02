@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>完成展示</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 响应式基础设置 */
+        html {
+            font-size: 100%;
+            /* 基于750px设计稿的响应式设置 */
+            @media (max-width: 750px) {
+                font-size: 100vw / 750;
+            }
+        }
+        
+        /* 设置body背景图片 */
+        body {
+            background-image: url('wamao_img/background4.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* 相对定位，作为所有图片的定位容器 */
+            position: relative;
+            /* 适配750*1334设计稿的宽高比 */
+            max-height: 177.87vh; /* 1334/750*100 */
+        }
+        
+        /* 所有覆盖图片的通用样式 */
+        .overlay-image {
+            /* 绝对定位，覆盖在背景上 */
+            position: absolute;
+            /* 宽度与界面宽度一致 */
+            width: 100%;
+            /* 高度与界面高度一致 */
+            height: 100%;
+            /* 避免触摸事件影响 */
+            pointer-events: none;
+            /* 响应式图片大小 */
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* 图片的样式 */
+        /* 云朵图片的基础样式 */
+        .yunduo {
+            /* 保持原始比例 */
+            width: auto;
+            height: auto;
+            /* 避免触摸事件影响 */
+            pointer-events: none;
+        }
+        
+        /* 云朵1的样式（image33） */
+        .yunduo1 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+            /* 控制云朵大小 */
+            max-width: 70%;
+            /* 设置云朵初始位置 */
+            left: -35%;
+            /* 设置云朵垂直位置 */
+            top: 10%;
+            /* 添加水平移动动画 */
+            animation: moveCloud 25s linear infinite;
+        }
+        
+        /* 云朵2的样式（image34） */
+        .yunduo2 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+            /* 控制云朵大小 */
+            max-width: 55%;
+            /* 设置云朵初始位置 */
+            left: -32%;
+            /* 设置云朵垂直位置 */
+            top: 30%;
+            /* 添加水平移动动画 - 移除延迟 */
+            animation: moveCloud 30s linear infinite;
+        }
+        
+        /* 云朵3的样式（image35） */
+        .yunduo3 {
+            /* 确保图片在最上层 */
+            z-index: 3;
+            /* 控制云朵大小 */
+            max-width: 45%;
+            /* 设置云朵初始位置 */
+            left: -30%;
+            /* 设置云朵垂直位置 */
+            top: 50%;
+            /* 添加水平移动动画 - 移除延迟 */
+            animation: moveCloud 35s linear infinite;
+        }
+        
+        /* 云朵水平移动动画 */
+        @keyframes moveCloud {
+            from {
+                left: -100%; /* 从屏幕左侧外开始 */
+            }
+            to {
+                left: 100%; /* 移动到屏幕右侧外 */
+            }
+        }
+
+        /* 图片26的样式 */
+        .image26 {
+            /* 确保图片在最上层 */
+            z-index: 1;
+            bottom: 0;
+        }
+        
+        /* 图片27的样式 */
+        .image27 {
+            /* 确保图片在最上层 */
+            z-index: 4;
+            /* 添加小幅度放大缩小动画 */
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* 图片3的样式 */
+        .image28 {
+            /* 确保图片在最上层 */
+            z-index: 4;
+            /* 添加小幅度放大缩小动画 */
+            animation: pulse 2s ease-in-out infinite 0.5s;
+        }
+        
+        /* 图片29的样式 */
+        .image29 {
+            /* 确保图片在最上层 */
+            z-index: 4;
+            /* 添加小幅度放大缩小动画 */
+            animation: pulse 2s ease-in-out infinite 0.5s;
+        }
+        
+        /* 小幅度放大缩小动画 */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05); /* 放大5% */
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* 图片5的样式 */
+        .wamao {
+            /* 确保图片在最上层 */
+            z-index: 5;
+        }
+        
+        /* 提示框样式 */
+        .hint-box {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .hint-content {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .hint-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #FFD700;
+        }
+        
+        .hint-text-container {
+            overflow: hidden;
+            position: relative;
+            flex: 1;
+        }
+        
+        .hint-text {
+            font-size: 18px;
+            color: #333;
+            white-space: nowrap;
+            display: inline-block;
+            animation: textSlide 5s linear forwards;
+        }
+        
+        /* 文字轮播动画 */
+        @keyframes textSlide {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 所有覆盖图片 -->
+    <img src="wamao_img/image26.png" alt="屋檐" class="overlay-image image26">
+    <img src="wamao_img/image27.png" alt="装饰1" class="overlay-image image27">
+    <img src="wamao_img/image28.png" alt="装饰2" class="overlay-image image28">
+    <img src="wamao_img/image29.png" alt="装饰3" class="overlay-image image29">
+    <img src="wamao_img/image33.png" alt="云朵1" class="overlay-image yunduo yunduo1">
+    <img src="wamao_img/image34.png" alt="云朵2" class="overlay-image yunduo yunduo2">
+    <img src="wamao_img/image35.png" alt="云朵3" class="overlay-image yunduo yunduo3">
+    
+    <!-- 添加提示框 -->
+    <div id="hintBox" class="hint-box">
+        <div class="hint-content">
+            <span class="hint-icon">💡</span>
+            <div class="hint-text-container">
+                <span class="hint-text">瓦猫制作完成啦！</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 页面加载完成后执行
+        window.onload = function() {
+            // 显示提示框
+            const hintBox = document.getElementById('hintBox');
+            setTimeout(() => {
+                hintBox.style.opacity = '1';
+                
+                // 5秒后隐藏提示框（与文字轮播动画时长一致）
+                setTimeout(() => {
+                    hintBox.style.opacity = '0';
+                    
+                    // 提示框完全隐藏后显示瓦猫图片
+                    setTimeout(() => {
+                        // 从localStorage中获取带颜色的wamao图片信息
+                        const coloredWamaoImageName = localStorage.getItem('selectedColoredWamaoImage');
+                        
+                        if (coloredWamaoImageName) {
+                            console.log('获取到带颜色的wamao图片信息:', coloredWamaoImageName);
+                            
+                            // 构建完整的图片路径
+                            const coloredWamaoImagePath = `27wamao2/${coloredWamaoImageName}`;
+                            
+                            // 创建img元素
+                            const coloredWamaoImg = document.createElement('img');
+                            coloredWamaoImg.src = coloredWamaoImagePath;
+                            coloredWamaoImg.alt = '带颜色的wamao图片';
+                            
+                            // 添加样式类
+                            coloredWamaoImg.classList.add('overlay-image', 'wamao');
+                            
+                            // 设置样式
+                            coloredWamaoImg.style.zIndex = '5';
+                            coloredWamaoImg.style.position = 'absolute';
+                            coloredWamaoImg.style.top = '62%';
+                            coloredWamaoImg.style.left = '50%';
+                            coloredWamaoImg.style.transform = 'translate(-50%, -50%) scale(1)';
+                            coloredWamaoImg.style.width = 'auto';
+                            coloredWamaoImg.style.height = 'auto';
+                            coloredWamaoImg.style.maxWidth = '80%';
+                            coloredWamaoImg.style.maxHeight = '80%';
+                            coloredWamaoImg.style.opacity = '0';
+                            coloredWamaoImg.style.transition = 'opacity 1s ease';
+                            coloredWamaoImg.style.pointerEvents = 'none';
+                            
+                            // 添加到body中
+                            document.body.appendChild(coloredWamaoImg);
+                            
+                            // 淡入动画
+                            setTimeout(() => {
+                                coloredWamaoImg.style.opacity = '1';
+                            }, 500);
+                        } else {
+                            console.error('未找到保存的带颜色wamao图片信息');
+                        }
+                    }, 1000); // 等待1秒确保提示框完全隐藏
+                }, 5000); // 5秒后隐藏提示框
+            }, 300);
+        };
+        
+        </script>
+    
+    <!-- 下一步按钮 -->
+    <button class="next-btn" id="nextButton">下一步</button>
+    
+    <script>
+        // 为下一步按钮添加点击事件
+        document.getElementById('nextButton').addEventListener('click', function() {
+            window.location.href = 'wenchuang.html';
+        });
+    </script>
+</body>
+</html>
