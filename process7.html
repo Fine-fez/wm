@@ -122,7 +122,7 @@
         .color-boxes-container {
             /* 绝对定位在页面底部 */
             position: absolute;
-            bottom: 135px; /* 向上移动100px */
+            bottom: 115px; /* 向上移动100px */
             left: 0;
             /* 占据整个页面宽度 */
             width: 100vw;
@@ -245,7 +245,7 @@
             color: #333;
             white-space: nowrap;
             display: inline-block;
-            animation: textSlide 10s linear forwards;
+            animation: textSlide 5s linear forwards;
         }
         
         /* 文字轮播动画 */
@@ -278,7 +278,7 @@
         <div class="hint-content">
             <span class="hint-icon">💡</span>
             <div class="hint-text-container">
-                <span class="hint-text">快选择喜欢的釉色装饰瓦猫吧~</span>
+                <span class="hint-text">快选择喜欢的釉色装饰瓦猫吧。</span>
             </div>
         </div>
     </div>
@@ -302,7 +302,7 @@
                     setTimeout(() => {
                         displaySavedWamaoImage();
                     }, 1000); // 等待1秒确保提示框完全隐藏
-                }, 10000); // 10秒后隐藏提示框
+                }, 5000); // 10秒后隐藏提示框
             }, 300);
         };
         
@@ -553,6 +553,4 @@
         <div class="color-box color-box-blue"></div>
     </div>
 </body>
-
 </html>
-
