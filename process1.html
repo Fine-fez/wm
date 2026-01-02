@@ -58,10 +58,9 @@
             /* 确保图片在最上层 */
             left: 0;
             top: 67%;
-            width: auto;
+            width: 100%;
             height: auto;
             z-index: 1;
-            width: 100%;
         }
 
         /* 图片36的样式 */
@@ -282,6 +281,28 @@
             animation: textSlide 7s linear forwards;
         }
         
+        /* 下一步按钮样式 */
+        #nextBtn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #D2B48C;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        #nextBtn:hover {
+            opacity: 1;
+        }
+
         /* 文字轮播动画 */
         @keyframes textSlide {
             0% {
@@ -748,28 +769,28 @@
             <img src="wamao_img/image2.png" alt="水瓶" class="overlay-image image2 cailiao">
             <img src="wamao_img/image6.png" alt="勺子" class="overlay-image image6 cailiao">
         </div>
-    <img src="wamao_img/image11.png" alt="被勺过的陶土" class="overlay-image image11">
-    <img src="wamao_img/image3.png" alt="碗" class="overlay-image image3">
-    <img src="wamao_img/image4.png" alt="" class="overlay-image image4">
-    <img src="wamao_img/image5.png" alt="猫爪" class="overlay-image image5">
-    <img src="wamao_img/image10.png" alt="光标" class="overlay-image image10">
-    <img src="wamao_img/image8.png" alt="泥" class="overlay-image image8">
-    <img src="wamao_img/image9.png" alt="雾气" class="overlay-image image9">
-    <!-- 进度条容器 -->
-    <div class="jindutiao-container" style="position: static; width: 100%; height: auto;">
-        <img src="wamao_img/jindutiao1.png" alt="进度条1" class="overlay-image jindutiao1">
-        <img src="wamao_img/jindutiao2.png" alt="进度条2" class="overlay-image jindutiao2">
-    </div>
-    
-    <!-- 提示框 -->
-    <div id="hintBox" class="hint-box">
-        <div class="hint-content">
-            <span class="hint-icon">💡</span>
-            <div class="hint-text-container">
-                <span class="hint-text">欢迎来到瓦猫制作工艺，首先选取材料台的原材料和泥,请依次选择砂石、陶土与水。</span>
+        <img src="wamao_img/image11.png" alt="被勺过的陶土" class="overlay-image image11">
+        <img src="wamao_img/image3.png" alt="碗" class="overlay-image image3">
+        <img src="wamao_img/image4.png" alt="" class="overlay-image image4">
+        <img src="wamao_img/image5.png" alt="猫爪" class="overlay-image image5">
+        <img src="wamao_img/image10.png" alt="光标" class="overlay-image image10">
+        <img src="wamao_img/image8.png" alt="泥" class="overlay-image image8">
+        <img src="wamao_img/image9.png" alt="雾气" class="overlay-image image9">
+        <!-- 进度条容器 -->
+        <div class="jindutiao-container" style="position: static; width: 100%; height: auto;">
+            <img src="wamao_img/jindutiao1.png" alt="进度条1" class="overlay-image jindutiao1">
+            <img src="wamao_img/jindutiao2.png" alt="进度条2" class="overlay-image jindutiao2">
+        </div>
+        
+        <!-- 提示框 -->
+        <div id="hintBox" class="hint-box">
+            <div class="hint-content">
+                <span class="hint-icon">💡</span>
+                <div class="hint-text-container">
+                    <span class="hint-text">欢迎来到瓦猫制作工艺，首先选取材料台的原材料和泥,请依次选择砂石、陶土与水。</span>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 </html>
