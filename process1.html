@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>原料制备</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         /* 基础样式重置 */
         * {
@@ -770,6 +771,16 @@
                 </div>
             </div>
         </div>
+        
+        <!-- 下一步按钮 -->
+        <button class="next-btn" id="nextButton">下一步</button>
     </div>
+    
+    <script>
+        // 为下一步按钮添加点击事件
+        document.getElementById('nextButton').addEventListener('click', function() {
+            window.location.href = 'process2.html';
+        });
+    </script>
 </body>
 </html>
