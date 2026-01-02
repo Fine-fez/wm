@@ -16,45 +16,36 @@
         /* 响应式基础设置 */
         html {
             font-size: 100%;
-        }
-        
-        /* 基于750px设计稿的响应式设置 */
-        @media (max-width: 750px) {
-            html {
+            /* 基于750px设计稿的响应式设置 */
+            @media (max-width: 750px) {
                 font-size: 100vw / 750;
             }
         }
         
-        /* 设置body为flex布局，居中显示内容 */
+        /* 设置body背景图片 */
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-image: url('wamao_img/background1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            background-color: #f5f5f5; /* 可选：添加背景色，当主容器小于屏幕时显示 */
-        }
-        
-        /* 主容器样式：保持750*1334的固定宽高比 */
-        .main-container {
+            /* 相对定位，作为所有图片的定位容器 */
             position: relative;
-            width: 100vw;
-            height: 177.87vw; /* 1334/750 = 1.7787，保持设计稿宽高比 */
-            max-height: 100vh;
-            max-width: 56.25vh; /* 750/1334 = 0.5625，当高度受限时限制宽度 */
-            overflow: hidden;
-            /* 设置背景图片 */
-            background-image: url('wamao_img/background1.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            /* 适配750*1334设计稿的宽高比 */
+            max-height: 177.87vh; /* 1334/750*100 */
         }
         
         /* 所有覆盖图片的通用样式 */
         .overlay-image {
             /* 绝对定位，覆盖在背景上 */
             position: absolute;
+            /* 宽度与界面宽度一致 */
+            width: 100%;
+            /* 高度与界面高度一致 */
+            height: 100%;
             /* 避免触摸事件影响 */
             pointer-events: none;
             /* 响应式图片大小 */
@@ -233,6 +224,13 @@
             display: none;
             /* 添加过渡动画 */
             transition: opacity 1s ease;
+        }
+        
+        /* 主容器样式 */
+        .main-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
         
         /* 材料容器样式 */
@@ -739,8 +737,9 @@
     </script>
 </head>
 <body>
+    <!-- 主容器 -->
     <div class="main-container">
-    <!-- 所有覆盖图片 -->
+        <!-- 所有覆盖图片 -->
         <!-- 材料盒子容器 -->
         <div class="cailiao-container">
             <img src="wamao_img/image31.png" alt="材料台" class="overlay-image image31 cailiao">
@@ -749,29 +748,28 @@
             <img src="wamao_img/image2.png" alt="水瓶" class="overlay-image image2 cailiao">
             <img src="wamao_img/image6.png" alt="勺子" class="overlay-image image6 cailiao">
         </div>
-        <img src="wamao_img/image11.png" alt="被勺过的陶土" class="overlay-image image11">
-        <img src="wamao_img/image3.png" alt="碗" class="overlay-image image3">
-        <img src="wamao_img/image4.png" alt="" class="overlay-image image4">
-        <img src="wamao_img/image5.png" alt="猫爪" class="overlay-image image5">
-        <img src="wamao_img/image10.png" alt="光标" class="overlay-image image10">
-        <img src="wamao_img/image8.png" alt="泥" class="overlay-image image8">
-        <img src="wamao_img/image9.png" alt="雾气" class="overlay-image image9">
-        <!-- 进度条容器 -->
-        <div class="jindutiao-container" style="position: static; width: 100%; height: auto;">
-            <img src="wamao_img/jindutiao1.png" alt="进度条1" class="overlay-image jindutiao1">
-            <img src="wamao_img/jindutiao2.png" alt="进度条2" class="overlay-image jindutiao2">
-        </div>
-        
-        <!-- 提示框 -->
-        <div id="hintBox" class="hint-box">
-            <div class="hint-content">
-                <span class="hint-icon">💡</span>
-                <div class="hint-text-container">
-                    <span class="hint-text">欢迎来到瓦猫制作工艺，首先选取材料台的原材料和泥,请依次选择砂石、陶土与水。</span>
-                </div>
+    <img src="wamao_img/image11.png" alt="被勺过的陶土" class="overlay-image image11">
+    <img src="wamao_img/image3.png" alt="碗" class="overlay-image image3">
+    <img src="wamao_img/image4.png" alt="" class="overlay-image image4">
+    <img src="wamao_img/image5.png" alt="猫爪" class="overlay-image image5">
+    <img src="wamao_img/image10.png" alt="光标" class="overlay-image image10">
+    <img src="wamao_img/image8.png" alt="泥" class="overlay-image image8">
+    <img src="wamao_img/image9.png" alt="雾气" class="overlay-image image9">
+    <!-- 进度条容器 -->
+    <div class="jindutiao-container" style="position: static; width: 100%; height: auto;">
+        <img src="wamao_img/jindutiao1.png" alt="进度条1" class="overlay-image jindutiao1">
+        <img src="wamao_img/jindutiao2.png" alt="进度条2" class="overlay-image jindutiao2">
+    </div>
+    
+    <!-- 提示框 -->
+    <div id="hintBox" class="hint-box">
+        <div class="hint-content">
+            <span class="hint-icon">💡</span>
+            <div class="hint-text-container">
+                <span class="hint-text">欢迎来到瓦猫制作工艺，首先选取材料台的原材料和泥,请依次选择砂石、陶土与水。</span>
             </div>
         </div>
-        
+    </div>
     </div>
 </body>
 </html>
