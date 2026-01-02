@@ -207,6 +207,57 @@
             cursor: not-allowed;
         }
         
+        /* 上一步按钮样式 */
+        #prevBtn {
+            position: absolute;
+            bottom: 20px;
+            right: 140px;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #D2B48C;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        #prevBtn:hover {
+            opacity: 1;
+        }
+        
+        /* 下一步按钮样式 */
+        #nextBtn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #D2B48C;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        #nextBtn:hover {
+            opacity: 1;
+        }
+        
+        /* 按钮禁用状态 */
+        #prevBtn:disabled,
+        #nextBtn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
         /* image9样式 */
         .image9 {
             z-index: 15;
@@ -225,7 +276,7 @@
         .result-wamao {
             z-index: 20;
             position: absolute;
-            top: 55%;
+            top: 57%;
             left: 50%;
             transform: translate(-50%, -80%);
             width: auto;
@@ -274,7 +325,7 @@
             color: #333;
             white-space: nowrap;
             display: inline-block;
-            animation: textSlide 10s linear forwards;
+            animation: textSlide 5s linear forwards;
         }
         
         /* 文字轮播动画 */
@@ -307,7 +358,7 @@
         <div class="hint-content">
             <span class="hint-icon">💡</span>
             <div class="hint-text-container">
-                <span class="hint-text">选择你喜欢的耳朵，鼻子，嘴巴，DIY一个专属瓦猫吧~</span>
+                <span class="hint-text">选择你喜欢的耳朵，鼻子，嘴巴，DIY一个专属瓦猫吧。</span>
             </div>
         </div>
     </div>
@@ -329,6 +380,12 @@
 
     <!-- 确定按钮 -->
     <button id="confirmBtn" disabled>确定</button>
+    
+    <!-- 上一步按钮 -->
+    <button id="prevBtn" style="display: none;">上一步</button>
+    
+    <!-- 下一步按钮 -->
+    <button id="nextBtn">下一步</button>
 
     <script>
         // 页面加载时显示提示框，轮播后启动原有动画
@@ -346,7 +403,7 @@
                     setTimeout(() => {
                         initOrganSelection();
                     }, 1000); // 等待1秒确保提示框完全隐藏
-                }, 10000); // 10秒后隐藏提示框
+                }, 5000); // 10秒后隐藏提示框
             }, 300);
         };
         
@@ -357,6 +414,8 @@
             const scrollContent = document.querySelector('.scroll-content');
             const images = document.querySelectorAll('.organ');
             const confirmBtn = document.getElementById('confirmBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
             const image9 = document.querySelector('.image9');
             const resultContainer = document.getElementById('resultContainer');
             const image8 = document.querySelector('.image8');
@@ -420,16 +479,27 @@
                 // 检查是否所有组都已选择
                 checkSelectionsComplete();
                 
-                // 如果不是最后一组，自动滚动到下一组
-                if (groupIndex < groups.length - 1) {
-                    currentGroup++;
-                    scrollToNextGroup();
-                } else {
-                    // 所有组都选择完成
-                    console.log('所有选择完成！');
-                    console.log('最终选择：', userSelections);
-                }
+                // 更新按钮显示状态
+                updateButtonVisibility();
             });
+        });
+        
+        // 上一步按钮点击事件
+        prevBtn.addEventListener('click', () => {
+            if (currentGroup > 0) {
+                currentGroup--;
+                scrollToGroup(currentGroup);
+                updateButtonVisibility();
+            }
+        });
+        
+        // 下一步按钮点击事件
+        nextBtn.addEventListener('click', () => {
+            if (currentGroup < groups.length - 1) {
+                currentGroup++;
+                scrollToGroup(currentGroup);
+                updateButtonVisibility();
+            }
         });
         
         // 检查选择是否完成
@@ -441,20 +511,51 @@
             }
         }
         
-        // 滚动到下一组的函数
-        function scrollToNextGroup() {
+        // 滚动到指定组的函数
+        function scrollToGroup(groupIndex) {
             // 计算滚动距离（每组宽度 + 图片间距）
             const groupWidth = window.innerWidth; // 容器宽度，正好显示一组3张图片
-            const scrollDistance = groupWidth * currentGroup;
+            const scrollDistance = groupWidth * groupIndex;
             
-            // 平滑滚动到下一组
+            // 平滑滚动到指定组
             scrollContainer.scrollTo({
                 left: scrollDistance,
                 behavior: 'smooth'
             });
             
-            console.log(`自动滚动到第${currentGroup + 1}组`);
+            console.log(`滚动到第${groupIndex + 1}组`);
         }
+        
+        // 滚动到下一组的函数（保留用于兼容性）
+        function scrollToNextGroup() {
+            scrollToGroup(currentGroup);
+        }
+        
+        // 更新按钮显示状态的函数
+        function updateButtonVisibility() {
+            // 根据当前组更新按钮显示
+            if (currentGroup === 0) {
+                // 第一组：只显示下一步
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'block';
+                confirmBtn.style.display = 'none';
+            } else if (currentGroup === 1) {
+                // 第二组：显示上一步和下一步
+                prevBtn.style.display = 'block';
+                nextBtn.style.display = 'block';
+                confirmBtn.style.display = 'none';
+            } else if (currentGroup === 2) {
+                // 第三组：只显示确定按钮
+                prevBtn.style.display = 'block';
+                nextBtn.style.display = 'none';
+                confirmBtn.style.display = 'block';
+                // 确保确定按钮的禁用状态正确
+                checkSelectionsComplete();
+            }
+        }
+        
+        // 初始化按钮显示状态
+        updateButtonVisibility();
         
         // 确定按钮点击事件
         confirmBtn.addEventListener('click', () => {
@@ -607,7 +708,4 @@
     }
     </script>
 </body>
-
 </html>
-
-
