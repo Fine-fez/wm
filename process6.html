@@ -234,7 +234,7 @@
             color: #333;
             white-space: nowrap;
             display: inline-block;
-            animation: textSlide 10s linear forwards;
+            animation: textSlide 5s linear forwards;
         }
         
         /* 文字轮播动画 */
@@ -269,7 +269,7 @@
         <div class="hint-content">
             <span class="hint-icon">💡</span>
             <div class="hint-text-container">
-                <span class="hint-text">进行初次高温烧制，把瓦猫推进炉子，即可开始烧制~</span>
+                <span class="hint-text">进行初次高温烧制，把瓦猫推进炉子，即可开始烧制。</span>
             </div>
         </div>
     </div>
@@ -284,7 +284,7 @@
                 setTimeout(() => {
                     hintBox.style.opacity = '0';
                     setTimeout(startOriginalAnimation, 1000); // 隐藏后启动原有动画
-                }, 10000); // 10秒文字轮播
+                }, 5000); // 10秒文字轮播
             }, 300);
         };
         
@@ -371,7 +371,4 @@
         }
     </script>
 </body>
-
 </html>
-
-
