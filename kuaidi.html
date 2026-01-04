@@ -230,8 +230,19 @@
             color: #999;
         }
     </style>
+    <script src="audioManager.js"></script>
 </head>
 <body>
+    <!-- 音频控制按钮 -->
+    <div id="audioControl" style="position: absolute; top: 20px; right: 20px; z-index: 9999; cursor: pointer; width: 30px; height: 30px;">
+        <svg id="audioIcon" width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2c1.1 0 2 .9 2 2v5h5c1.1 0 2 .9 2 2s-.9 2-2 2h-5v5c0 1.1-.9 2-2 2s-2-.9-2-2v-5H5c-1.1 0-2-.9-2-2s.9-2 2-2h5V4c0-1.1.9-2 2-2z"/>
+        </svg>
+    </div>
+    <script>
+        // 绑定音频控制按钮点击事件
+        document.getElementById('audioControl').addEventListener('click', AudioManager.togglePlay);
+    </script>
     <!-- 顶部导航 -->
     <div class="header">
         <button id="backIcon" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); background: #ff9a9e; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; z-index: 100;">返回</button>
