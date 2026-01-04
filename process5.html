@@ -157,8 +157,19 @@
             }
         }
     </style>
+    <script src="audioManager.js"></script>
 </head>
 <body>
+    <!-- 音频控制按钮 -->
+    <div id="audioControl" style="position: absolute; top: 20px; right: 20px; z-index: 9999; cursor: pointer; width: 30px; height: 30px;">
+        <svg id="audioIcon" width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2c1.1 0 2 .9 2 2v5h5c1.1 0 2 .9 2 2s-.9 2-2 2h-5v5c0 1.1-.9 2-2 2s-2-.9-2-2v-5H5c-1.1 0-2-.9-2-2s.9-2 2-2h5V4c0-1.1.9-2 2-2z"/>
+        </svg>
+    </div>
+    <script>
+        // 绑定音频控制按钮点击事件
+        document.getElementById('audioControl').addEventListener('click', AudioManager.togglePlay);
+    </script>
     <!-- 所有覆盖图片 -->
     <img src="wamao_img/image19.png" alt="白天背景" class="overlay-image image19">
     <img src="wamao_img/image20.png" alt="夜间背景" class="overlay-image image20" style="display: none;">
